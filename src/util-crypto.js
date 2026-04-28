@@ -68,9 +68,5 @@ export function isEncryptedData(data) {
         }
     }
 
-    if (!requiredProps.every(prop => typeof data[prop] === 'string')) {
-        return false;
-    }
-
     return true;
 }
