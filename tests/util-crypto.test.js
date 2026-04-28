@@ -135,15 +135,19 @@ describe('isEncryptedData', () => {
     test('returns false when a required property is missing', () => {
         const encrypted = encryptObjectAes256({ a: 1 }, 'key');
         const { salt: _salt, ...withoutSalt } = encrypted;
+        expect(_salt).toBeDefined();
         expect(isEncryptedData(withoutSalt)).toBe(false);
 
         const { iv: _iv, ...withoutIv } = encrypted;
+        expect(_iv).toBeDefined();
         expect(isEncryptedData(withoutIv)).toBe(false);
 
         const { encrypted: _enc, ...withoutEncrypted } = encrypted;
+        expect(_enc).toBeDefined();
         expect(isEncryptedData(withoutEncrypted)).toBe(false);
 
         const { authTag: _tag, ...withoutAuthTag } = encrypted;
+        expect(_tag).toBeDefined();
         expect(isEncryptedData(withoutAuthTag)).toBe(false);
     });
 
