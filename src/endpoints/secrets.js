@@ -197,8 +197,7 @@ export class SecretManager {
 
                 return decryptObjectAes256(parsedData, SecretManager.#masterPassword);
             } catch (error) {
-                console.error('Failed to decrypt secrets file. Please check your master password and ensure it is correct.', error);
-                throw new Error('Decryption failed');
+                throw new Error('Decryption failed', { cause: error });
             }
         }
 
@@ -604,7 +603,7 @@ export function migrateFlatSecrets(directoriesList) {
             const manager = new SecretManager(directories);
             manager.migrateFlatSecrets();
         } catch (error) {
-            console.warn(color.red(`Failed to migrate secrets for ${directories.root}:`), error);
+            console.warn(color.red(`Failed to migrate secrets for ${path.basename(directories.root)}:`), error);
         }
     }
 }
