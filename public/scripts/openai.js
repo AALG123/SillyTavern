@@ -437,7 +437,7 @@ const default_settings = {
     sort_models: 'alphabetically',
     group_models: false,
     openai_model: 'gpt-4-turbo',
-    claude_model: 'claude-sonnet-4-5',
+    claude_model: 'claude-sonnet-5',
     google_model: 'gemini-2.5-pro',
     vertexai_model: 'gemini-2.5-pro',
     ai21_model: 'jamba-large',
@@ -3046,10 +3046,10 @@ export async function createGenerationParameters(settings, model, type, messages
         }
     }
 
-    // Claude Fable models removed sampling parameters and reject them with HTTP 400,
-    // including via OpenAI-compatible proxies. Unanchored to also match prefixed ids
-    // like 'anthropic/claude-fable-5'.
-    if (/claude-fable/.test(model)) {
+    // Claude Fable and Claude 5 generation models removed sampling parameters and reject
+    // them with HTTP 400, including via OpenAI-compatible proxies. Unanchored to also match
+    // prefixed ids like 'anthropic/claude-fable-5'.
+    if (/claude-(fable|opus-5|sonnet-5)/.test(model)) {
         delete generate_data.temperature;
         delete generate_data.top_p;
         delete generate_data.top_k;
@@ -5672,7 +5672,7 @@ async function onModelChange() {
     if (oai_settings.chat_completion_source == chat_completion_sources.CLAUDE) {
         if (oai_settings.max_context_unlocked) {
             $('#openai_max_context').attr('max', unlocked_max);
-        } else if (/^claude-(sonnet-4-5|sonnet-4-6|opus-4-6|opus-4-7|opus-4-8|fable)/.test(value)) {
+        } else if (/^claude-(sonnet-4-5|sonnet-4-6|opus-4-6|opus-4-7|opus-4-8|fable|opus-5|sonnet-5)/.test(value)) {
             $('#openai_max_context').attr('max', max_1mil);
         } else if (/^claude-(3|opus|haiku|sonnet)/.test(value)) {
             $('#openai_max_context').attr('max', max_200k);
@@ -6192,6 +6192,8 @@ export function isImageInliningSupported() {
         // Claude
         'claude-3',
         'claude-fable',
+        'claude-opus-5',
+        'claude-sonnet-5',
         'claude-opus-4',
         'claude-sonnet-4',
         'claude-haiku-4',
